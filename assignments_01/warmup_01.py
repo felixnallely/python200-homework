@@ -272,7 +272,7 @@ print(f"p-value (one-tailed): {p_val_one_tail:.4f}")
 
 #--- Hypothesis Question 6 ---
 print("Hypothesis Q6:")
-print("The differenece in average scores is likely due to chance, so we conclude there was an imporvement in study materials.")
+print("The differenece in average scores is statistically significant, with group B scoring higher than group A. This concludes the difference is unlikely due to chance.")
 
 #%%
 #---- Correlation Review ----

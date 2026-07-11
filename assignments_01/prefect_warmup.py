@@ -40,11 +40,13 @@ if __name__ == "__main__":
 
 #---- comment answer ----
 #- Why might Prefect be more overhead than it is worth here?
-#  This pipeline is very small and it deals with a few simple operations in this small array.
-#  Therefore using Prefect adds additional work when initializing and in execution time unlike using plain Python calls.
-#  Using plain Python would have been faster and a lot easier to read. Overall using Prefect for such a small pipeline that has a tiny array overweights its value.
+#  This pipeline is very small it only performs a few simple operations on a small array.
+#  Therefore using Prefect adds additional components such as a flow engine, and runtime overhead. 
+#  Since this is a small workflow using Prefect will add additional work when initializing and in execution time unlike using plain Python calls.
+#  Using plain Python would run faster and make it easier to read. Overall using Prefect for such a small pipeline outweighs the benefits. 
 
-#
 #- Logical scenarios where framework like Prefect could be useful:
-#  -When having team collabrations since it can give other members access to any faliures on a project, etc. 
-#  -When scheduling since the workflow is small and can be run every hour, day and week. 
+#  -Team Collaborations - When having team collaborations since it gives other developers access to logs, any failures and run history.
+#  -Scheduling - When scheduling since workflow is small and can be run every hour, day and week. 
+#  -Monitoring and alerting - automatically finds failures or unusual results. 
+#  -Retry logic - because it re-runs tasks that fail because of API or network issues.

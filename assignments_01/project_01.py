@@ -71,7 +71,7 @@ def compute_descriptive_stats(df):
     #mean by region 
     logger.info("Mean Happiness score by Region:")
     mean_region = df.groupby("Regional indicator")["Happiness score"].mean()
-    for region, vlaue in mean_region.items():
+    for region, value in mean_region.items():
         logger.info(f"{region}: {value:.3f}")
     
     return {
@@ -153,18 +153,18 @@ def run_statistical_tests(df):
     if p_val < 0.05:
         if mean_2020 < mean_2019:
             interpretation = (
-                "Global happiness scores declined significantly in 2020,"
-                "this suggests the pandemic negativly affected well-being."
+                "Global happiness scores were significantly lower in 2020 compared to 2019."
+                "This suggests the decline was real and not because of random chance."
             )
         else: 
             interpretation = (
-                "Global happiness scores increased significantly in 2020,"
-                "this suggests there was resilience during the pandemic."
+                "Global happiness scores significantly higher in 2020 compared to 2019."
+                "This suggests there was resilience during the pandemic."
             )
     else:
         interpretation = (
-            "No statistically significant difference between 2019 and 2020 happiness scores,"
-            "therefore the pandemic did not alter global happiness."
+            "No statistically significant difference between 2019 and 2020 happiness scores."
+            "Therefore in change in happiness score is likely due yearly variation."
         )
     
     logger.info(f"Interpretation: {interpretation}")
@@ -325,13 +325,17 @@ def summary_report(stats, tests, correlations):
 
         
         #Strongest surviving correlation 
-        f.write("\Strongest surviving correlation:\n")
+        f.write("\nStrongest surviving correlation:\n")
 
         if correlations["significant_corrected"]:
-            strongest = max(
-                correlations["results"],
-                key= lambda x: abs(x[1]) if x[0] in correlations["significant_corrected"] else -1
-            )
+            surviving = [
+                (col, r, p)
+                for col, r, p in correlations["results"]
+                if col in correlations["significant_corrected"]
+            ]
+
+            strongest = max(surviving, key=lambda x: abs(x[1]))
+            
             f.write(f"{strongest[0]} (r= {strongest[1]:.3f})\n")
         else:
             f.write("None survived Bonferri correction.\n")
