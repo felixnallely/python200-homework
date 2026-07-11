@@ -60,19 +60,19 @@ def compute_descriptive_stats(df):
 
     logger.info(f"Overall Mean Happiness score: {mean_score:.3f}")
     logger.info(f"Overall Median Happiness score: {median_score:.3f}")
-    logger.info(f"Overall Standard Deviation Happiness score: {mean_score:.3f}")
+    logger.info(f"Overall Standard Deviation Happiness score: {std_score:.3f}")
 
     #mean by year 
-    logger.info("Mean Happiness socre by Year:")
+    logger.info("Mean Happiness score by Year:")
     mean_year = df.groupby("Year")["Happiness score"].mean()
     for year, value in mean_year.items():
-        logger.info(f" {year}: {value:.3f}")
+        logger.info(f"{year}: {value:.3f}")
     
     #mean by region 
     logger.info("Mean Happiness score by Region:")
     mean_region = df.groupby("Regional indicator")["Happiness score"].mean()
     for region, vlaue in mean_region.items():
-        logger.info(f" {region}: {value:.3f}")
+        logger.info(f"{region}: {value:.3f}")
     
     return {
         "overall": {
@@ -96,8 +96,6 @@ def create_visualizations(df):
     plt.figure(figsize=(8, 6))
     sns.histplot(df["Happiness score"], bins=20, kde=True, color="skyblue")
     plt.title("All Years Happiness Score Distribution")
-    plt.xlabel("Happiness Score")
-    plt.ylabel("Frequency")
     plt.tight_layout()
     plt.savefig(output_dir / "happiness_histogram.png")
     plt.close()
@@ -107,8 +105,6 @@ def create_visualizations(df):
     plt.figure(figsize=(10, 6))
     sns.boxplot(x="Year", y="Happiness score", data=df)
     plt.title("By Year Happiness Score Distribution")
-    plt.xlabel("Year")
-    plt.ylabel("Happiness Score")
     plt.tight_layout()
     plt.savefig(output_dir / "happiness_by_year.png")
     plt.close()
@@ -120,6 +116,7 @@ def create_visualizations(df):
     plt.title("GDP per Capita vs Happiness Score")
     plt.tight_layout()
     plt.savefig(output_dir / "gdp_vs_happiness.png")
+    plt.close()
     logger.info("Saved Scatter plot as gdp_vs_happiness.png")
 
     #Correlation Heatmap
@@ -310,7 +307,7 @@ def summary_report(stats, tests, correlations):
 
         f.write("Regional Comparison (Western Europe vs East Asia)\n")
         f.write(f"t = {tests['regional_test']['t_stat']:.3f}, p = {tests['regional_test']['p_val']:.4f}\n")
-        f.write(f"Mean Western Europe = {tests['regional_test']['mean_a']:.3f}, Mean east Asia = {tests['regional_test']['mean_b']:.3f}\n")
+        f.write(f"Mean Western Europe = {tests['regional_test']['mean_a']:.3f}, Mean East Asia = {tests['regional_test']['mean_b']:.3f}\n")
         f.write(f"Interpretation: {tests['regional_test']['interpretation']}\n\n")
 
         #Task 5  Analysis
@@ -326,10 +323,22 @@ def summary_report(stats, tests, correlations):
         f.write("\nSignificant after Bonferroni correction: \n")
         f.write(", ".join(correlations['significant_corrected']) + "\n")
 
+        
+        #Strongest surviving correlation 
+        f.write("\Strongest surviving correlation:\n")
+
+        if correlations["significant_corrected"]:
+            strongest = max(
+                correlations["results"],
+                key= lambda x: abs(x[1]) if x[0] in correlations["significant_corrected"] else -1
+            )
+            f.write(f"{strongest[0]} (r= {strongest[1]:.3f})\n")
+        else:
+            f.write("None survived Bonferri correction.\n")
+
         f.write("\nEnd of report. \n")
     
     logger.info(f"Summary report was saved to {report_path}")
-
 
 
 @flow 

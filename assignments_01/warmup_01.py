@@ -10,30 +10,34 @@ data = {
     "passed": [True, True, True, False, True]
 }
 df = pd.DataFrame(data)
-print(f"Num Rows: {df.head(3)}")
+
+#--- Pandas Question 1 ---
+print("First 3 Rows:")
+print(df.head(3))
 
 #--- Pandas Question 2 ---
-print(f"Students Passed: {df[df["grade"] > 80]}")
+passed_score = df[(df["passed"] == True) & (df["grade"] > 80)]
+print(f"Students Passed: {passed_score}")
 
 #--- Pandas Question 3 ---
 df["grade_curved"] = df["grade"] + 5
-print(f"New Column: {df[["name", "grade", "city", "passed", "grade_curved"]]}")
+print(f"New Column: {df[['name', 'grade', 'city', 'passed', 'grade_curved']]}")
 
 #--- Pandas Question 4 ---
 df["name_upper"] = df["name"].str.upper()
-print(f"Upper Case Name: {df[["name", "name_upper"]]}")
+print(f"Upper Case Name: {df[['name', 'name_upper']]}")
 
 #--- Pandas Question 5 ---
-group_by_city = df.groupby("city")
-print(f"Grade Average by City: {group_by_city["grade"].mean()}")
+group_by_city = df.groupby("city")["grade"].mean()
+print(f"Grade Average by City: {group_by_city}")
 
 #--- Pandas Question 6 ---
 df["city"] = df["city"].replace("Austin", "Houston")
-print(f"Austin to Houston: {df[["name", "city"]]}")
+print(f"Austin to Houston: {df[['name', 'city']]}")
 
 #--- Pandas Question 7 ---
 sort_grade = df.sort_values("grade", ascending=False)
-print(f"Grade Descending: {sort_grade.head(3)}")
+print(f"Top 3 Stuudents by Grade (Descending): {sort_grade.head(3)}")
 
 #%% 
 # ---- Numpy Review ----
@@ -49,7 +53,7 @@ import numpy as np
 arr_2d= np.array([[1, 2, 3],
                 [4, 5, 6],
                 [7, 8, 9]])
-print("Shape:", arr_1d.shape)
+print("Shape:", arr_2d.shape)
 print("Size:", arr_2d.size)
 
 #--- Numpy Question 3 ---
@@ -221,7 +225,7 @@ print("Data 2- Mode:", stats.mode(data2))
 #%%
 #---- Hypothesis Testing Review ----
 #--- Hypothesis Question 1 ---
-from spicy import stats 
+from scipy import stats 
 
 group_a = [72, 68, 75, 70, 69, 73, 71, 74]
 group_b = [80, 85, 78, 83, 82, 86, 79, 84]
@@ -261,8 +265,9 @@ print(f"p-value: {p_val:.4f}")
 #--- Hypothesis Question 5 ---
 print("Hypothesis Q5:")
 #one-tail test using Q1 datasets 
-stats.ttest_ind(group_a, group_b, alternative="less")
-print(f"p-value: {p_val:.4f}")
+t_stat_one_tail, p_val_one_tail = stats.ttest_ind(group_a, group_b, alternative="less")
+print(f"t-statistic (one-tailed, group_a < group_b): {t_stat_one_tail:.3f}")
+print(f"p-value (one-tailed): {p_val_one_tail:.4f}")
 
 
 #--- Hypothesis Question 6 ---
@@ -290,11 +295,10 @@ print(matrix[0, 1])
 
 #--- Correlation Question 2 ---
 from scipy.stats import pearsonr
-import pearsonr
 
 x = [1, 2, 3, 4, 5, 6, 7, 8, 9,10]
 y = [10, 9, 7, 8, 6, 5, 3, 4, 2, 1]
-corr, p_value = pearsonr.pearsonr(x, y)
+corr, p_value = pearsonr(x, y)
 
 print("Correlation Q2:")
 print(f"Correlation Coefficient: {corr}")
@@ -350,10 +354,10 @@ def clean_data(series):
 
 def summarize_data(series):
     return {
-        "mean": series.mean(),
-        "median": series.median(),
-        "std": series.std(),
-        "mode": series.mode()[0],
+        "mean": float(series.mean()),
+        "median": float(series.median()),
+        "std": float(series.std()),
+        "mode": float(series.mode()[0]),
     }
 
 def data_pipeline(arr):
@@ -361,10 +365,9 @@ def data_pipeline(arr):
     cleaned = clean_data(s)
     return summarize_data(cleaned)
 
+print("Pipeline Q1:")
 result = data_pipeline(arr)
+
 for k, v in result.items():
     print(f"{k}: {v}")
-    
-print("Pipeline Q1:")
-print(result)
 # %%
