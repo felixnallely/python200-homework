@@ -1,0 +1,38 @@
+WORLD HAPPINESS PIPELINE SUMMARY REPORT
+=============================================
+
+TASK 2: DESCRIPTIVE STATISTICS
+Mean Happiness Score: 5.449
+Median Happiness Score: 5.469
+Standard Deviation Happiness Score: 1.126
+
+TASK4: STATISTICAL TESTS
+Pandemic Impact (2019 vs 2020)
+t = -0.532, p = 0.5953
+Mean 2019 = 5.405, Mean 2020 = 5.473
+Interpretation: No statistically significant difference between 2019 and 2020 happiness scores,therefore the pandemic did not alter global happiness.
+
+Regional Comparison (Western Europe vs East Asia)
+t = 13.286, p = 0.0000
+Mean Western Europe = 6.723, Mean east Asia = 5.691
+Interpretation: Happiness scores differ significantly between Western Europe and East Asia. Western Europe seems to report higher happiness, which reflects stronger social and economic indicators.
+
+TASK 5: CORRELATION ANALYSIS
+Bonferroni-adjusted alpha: 0.00625
+
+Ranking: r = -0.985, p = 0.0000
+GDP per capita: r = 0.631, p = 0.0000
+Social support: r = 0.744, p = 0.0000
+Healthy life expectancy: r = 0.662, p = 0.0000
+Freedom to make life choices: r = 0.591, p = 0.0000
+Generosity: r = 0.106, p = 0.0000
+Perceptions of corruption: r = 0.072, p = 0.0054
+Year: r = 0.062, p = 0.0160
+
+Significant at alpha = 0.05: 
+Ranking, GDP per capita, Social support, Healthy life expectancy, Freedom to make life choices, Generosity, Perceptions of corruption, Year
+
+Significant after Bonferroni correction: 
+Ranking, GDP per capita, Social support, Healthy life expectancy, Freedom to make life choices, Generosity, Perceptions of corruption
+
+End of report. 
