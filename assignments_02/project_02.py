@@ -36,8 +36,10 @@ print("Original Shape:", df.shape)
 df_filtered = df[df["G3"] !=0].copy()
 print("Filtered shape:", df_filtered.shape)
 # --Why remove G3 rows: 
-# Because the G3=0 represents no show and absent students, instead of an overall performace in the class. 
-# Keeping this row would only distort the model and not provide any actual data. 
+# Because the G3=0 represents no show and absent students, G3=0 students were those that were not low-performing
+# it does not show the overall performance of students when they didn't take the final exam.
+# Keeping this row would only distort the model and not provide any actual data in terms of academic performance. 
+# Removing G3=0 will help reveal the correlations and relationships of other factors in this model.
 
 #Convert yes/no and sex tp 1/0 in df_filtered (the cleaned dataset)
 yes_no_columns = ["schoolsup", "internet", "higher", "activities"]
@@ -180,7 +182,7 @@ plt.plot([min_val, max_val], [min_val, max_val], color="red", linestyle="--")
 plt.title("Predicted vs Actual (Full Model)")
 plt.xlabel("Predicted G3")
 plt.ylabel("Actual G3")
-plt.savefig("outputs/predicted_vs_actual_g3.png")
+plt.savefig("outputs/predicted_vs_actual.png")
 plt.show()
 
 # Does the model seem to struggle more at the high end, the low end, or is error roughly 
@@ -236,5 +238,3 @@ print(f"Test R² with G1 included: {r2_test_g1:.3f}")
 #   needs additional support. If teachers want to intervene before G1 is available teachers would need to use other indicators 
 #   such as absences, failures and can even give additional assignments to collect data such as a diagnostic test, and homework. 
 #   These are some helpful indicators that can help identify students that are struggling even before any first grade is recorded. 
-
-

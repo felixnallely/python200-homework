@@ -102,10 +102,8 @@ X = age.reshape(-1, 1)
 y = cost
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-print(f"X_train: {X_train.shape}, X_test: {X_train.shape}")
-print(f"X_test: {X_test.shape}, X_test: {X_test.shape}")
-print(f"y_train: {y_train.shape}, y_train: {y_train.shape}")
-print(f"y_test: {y_test.shape}, y_test: {y_test.shape}")
+print(f"X_train: {X_train.shape}, X_test: {X_test.shape}")
+print(f"y_train: {y_train.shape}, y_train: {y_test.shape}")
 
 #--- Question 3 ---
 model = LinearRegression()
