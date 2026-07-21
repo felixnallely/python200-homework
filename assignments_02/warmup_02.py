@@ -3,7 +3,7 @@
 import numpy as np
 from sklearn.linear_model import LinearRegression
 
-#--- Question 1 ---
+#--- scikit-learn Question 1 ---
 years  = np.array([1, 2, 3, 5, 7, 10]).reshape(-1, 1)
 salary = np.array([45000, 50000, 60000, 75000, 90000, 120000])
 
@@ -17,7 +17,7 @@ print(f"Intercept: {model.intercept_}")
 print(f"Prediction for 4 years: {predicted[0]}")
 print(f"Prediction for 8 years: {predicted[1]}")
 
-#--- Question 2 ---
+#--- scikit-learn Question 2 ---
 x = np.array([10, 20, 30, 40, 50])
 
 #print shape
@@ -33,7 +33,7 @@ print("Reshaped shape:", x_2d.shape)
 # So even if there is only one feature it's important to convert to a 2D array because a 1D array will cause an error. 
 
 
-#--- Question 3 ---
+#--- scikit-learn Question 3 ---
 from sklearn.cluster import KMeans
 from sklearn.datasets import make_blobs
 import matplotlib.pyplot as plt
@@ -80,7 +80,7 @@ age    = np.random.randint(20, 65, num_patients).astype(float)
 smoker = np.random.randint(0, 2, num_patients).astype(float)
 cost   = 200 * age + 15000 * smoker + np.random.normal(0, 3000, num_patients)
 
-#--- Question 1 ---
+#--- Linear Regression Question 1 ---
 #Scatter plot 
 plt.figure(figsize=(8, 6))
 plt.scatter(age, cost, c=smoker, cmap='coolwarm', alpha=0.8, edgecolors='w')
@@ -97,15 +97,15 @@ plt.close()
 # as a major categorical shift indicator. But non-smokers which are shown by the blue color are clustered
 # heavily at lower cost baseline.
 
-#--- Question 2 ---
+#--- Linear Regression Question 2 ---
 X = age.reshape(-1, 1)
 y = cost
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 print(f"X_train: {X_train.shape}, X_test: {X_test.shape}")
-print(f"y_train: {y_train.shape}, y_train: {y_test.shape}")
+print(f"y_train: {y_train.shape}, y_test: {y_test.shape}")
 
-#--- Question 3 ---
+#--- Linear Regression Question 3 ---
 model = LinearRegression()
 model.fit(X_train, y_train)
 
@@ -120,7 +120,7 @@ r2 = model.score(X_test, y_test)
 print(f"RMSE: {rmse}")
 print(f"R2: {r2}")
 
-#--- Question 4 ---
+#--- Linear Regression Question 4 ---
 #form question 3 --> Age only 
 X_age = age.reshape(-1, 1)
 X_train_age, X_test_age, y_train, y_test = train_test_split(X_age, cost, test_size=0.2, random_state=42)
@@ -146,7 +146,7 @@ print(f"Smoker Coefficient:", model_full.coef_[1])
 # to 0.7737, which indicates that smoking status is a strong predictor to medical costs in the dataset and relying on age alone 
 # omits the source of variation. 
 
-#--- Question 5 ---
+#--- Linear Regression Question 5 ---
 y_predicted = model_full.predict(X_test_full)
 
 #Create plot

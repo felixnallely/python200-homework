@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 #Task 1: Load and Explore 
-df = pd.read_csv("outputs/resources/student_performance_math.csv", sep=";")
+df = pd.read_csv("assignments_02/outputs/resources/student_performance_math.csv", sep=";")
 
 print("Task 1:")
 print("Shape:", df.shape)
@@ -23,12 +23,12 @@ plt.hist(df["G3"], bins=21, edgecolor="black", color="skyblue")
 plt.title("Distribution of Final Math Grades")
 plt.xlabel("Final Grade")
 plt.ylabel("Count")
-plt.savefig("outputs/g3_distribution.png")
+plt.savefig("assignments_02/outputs/g3_distribution.png")
 plt.show()
 
 
 #Task 2: Preprocess the Data 
-df = pd.read_csv("outputs/resources/student_performance_math.csv", sep=";")
+df = pd.read_csv("assignments_02/outputs/resources/student_performance_math.csv", sep=";")
 print("Task 2:")
 print("Original Shape:", df.shape)
 
@@ -36,10 +36,9 @@ print("Original Shape:", df.shape)
 df_filtered = df[df["G3"] !=0].copy()
 print("Filtered shape:", df_filtered.shape)
 # --Why remove G3 rows: 
-# Because the G3=0 represents no show and absent students, G3=0 students were those that were not low-performing
-# it does not show the overall performance of students when they didn't take the final exam.
-# Keeping this row would only distort the model and not provide any actual data in terms of academic performance. 
-# Removing G3=0 will help reveal the correlations and relationships of other factors in this model.
+# The G3=0 means the student was absent during the final exam, so keeping these rows would mix actual grade patterns
+# with missing exam cases and cause the model to be distorted. 
+
 
 #Convert yes/no and sex tp 1/0 in df_filtered (the cleaned dataset)
 yes_no_columns = ["schoolsup", "internet", "higher", "activities"]
@@ -76,7 +75,7 @@ plt.scatter(df_filtered["absences"], df_filtered["G3"], alpha=0.7, color="skyblu
 plt.title("Absences vs final Grade")
 plt.xlabel("Absences")
 plt.ylabel("Final Grade (G3)")
-plt.savefig("outputs/absences_vs_g3.png")
+plt.savefig("assignments_02/outputs/absences_vs_g3.png")
 plt.show()
 
 # After filtering the data the relationship between absences and final grades become clear. 
@@ -90,7 +89,7 @@ plt.scatter(df_filtered["G2"], df_filtered["G3"], alpha=0.7, color="purple")
 plt.title("Second period grade (G2) vs Final Grade (G3)")
 plt.xlabel("Second period Grade (G2)")
 plt.ylabel("Final Grade (G3)")
-plt.savefig("outputs/g2_vs_g3.png")
+plt.savefig("assignments_02/outputs/g2_vs_g3.png")
 plt.show()
 
 # The Second Period Grade is a great predictor of G3. This is because when students perform
@@ -182,7 +181,7 @@ plt.plot([min_val, max_val], [min_val, max_val], color="red", linestyle="--")
 plt.title("Predicted vs Actual (Full Model)")
 plt.xlabel("Predicted G3")
 plt.ylabel("Actual G3")
-plt.savefig("outputs/predicted_vs_actual.png")
+plt.savefig("assignments_02/outputs/predicted_vs_actual.png")
 plt.show()
 
 # Does the model seem to struggle more at the high end, the low end, or is error roughly 
@@ -238,3 +237,4 @@ print(f"Test R² with G1 included: {r2_test_g1:.3f}")
 #   needs additional support. If teachers want to intervene before G1 is available teachers would need to use other indicators 
 #   such as absences, failures and can even give additional assignments to collect data such as a diagnostic test, and homework. 
 #   These are some helpful indicators that can help identify students that are struggling even before any first grade is recorded. 
+#   It is very important to note that this model is only useful once G1 exists. 
