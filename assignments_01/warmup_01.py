@@ -37,7 +37,7 @@ print(f"Austin to Houston: {df[['name', 'city']]}")
 
 #--- Pandas Question 7 ---
 sort_grade = df.sort_values("grade", ascending=False)
-print(f"Top 3 Stuudents by Grade (Descending): {sort_grade.head(3)}")
+print(f"Top 3 Students by Grade (Descending): {sort_grade.head(3)}")
 
 #%% 
 # ---- Numpy Review ----

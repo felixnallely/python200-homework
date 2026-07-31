@@ -6,15 +6,15 @@ Mean Happiness Score: 5.449
 Median Happiness Score: 5.469
 Standard Deviation Happiness Score: 1.126
 
-TASK4: STATISTICAL TESTS
+TASK 4: STATISTICAL TESTS
 Pandemic Impact (2019 vs 2020)
 t = -0.532, p = 0.5953
 Mean 2019 = 5.405, Mean 2020 = 5.473
-Interpretation: No statistically significant difference between 2019 and 2020 happiness scores,therefore the pandemic did not alter global happiness.
+Interpretation: No statistically significant difference between 2019 and 2020 happiness scores.Therefore in change in happiness score is likely due yearly variation.
 
 Regional Comparison (Western Europe vs East Asia)
 t = 13.286, p = 0.0000
-Mean Western Europe = 6.723, Mean east Asia = 5.691
+Mean Western Europe = 6.723, Mean East Asia = 5.691
 Interpretation: Happiness scores differ significantly between Western Europe and East Asia. Western Europe seems to report higher happiness, which reflects stronger social and economic indicators.
 
 TASK 5: CORRELATION ANALYSIS
@@ -34,5 +34,8 @@ Ranking, GDP per capita, Social support, Healthy life expectancy, Freedom to mak
 
 Significant after Bonferroni correction: 
 Ranking, GDP per capita, Social support, Healthy life expectancy, Freedom to make life choices, Generosity, Perceptions of corruption
+
+Strongest surviving correlation:
+Ranking (r= -0.985)
 
 End of report. 

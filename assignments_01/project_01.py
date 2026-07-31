@@ -6,7 +6,7 @@ import seaborn as sns
 
 #Task 1:
 data_dir = Path("assignments_01/resources/happiness_project")
-output_dir = Path("assignments_01/outputs")
+output_dir = Path("outputs")
 output_file = output_dir / "merged_happiness.csv"
 
 @task(retries=3, retry_delay_seconds=2)
