@@ -357,10 +357,10 @@ def summary_report(stats, tests, correlations, merged_df):
     bottom3 = region_means.tail(3)
     logger.info(f"Top 3 region by happiness:") 
     for region, value in top3.items():
-        logger.info(f"{region}: ({value:.3f})")
+        logger.info(f"{region}: ({value:.3f}")
     logger.info(f"Bottom 3 region by happiness:")
     for region, value in bottom3.items():
-        logger.info(f"{region}: {value:.3f})")
+        logger.info(f"{region}: {value:.3f}")
 
     logger.info("Pandemic test result:")
     logger.info(tests["pandemic_test"]["interpretation"])
