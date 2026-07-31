@@ -6,7 +6,7 @@ import seaborn as sns
 
 #Task 1:
 data_dir = Path("assignments_01/resources/happiness_project")
-output_dir = Path("outputs")
+output_dir = Path("assignments_01/outputs")
 output_file = output_dir / "merged_happiness.csv"
 
 @task(retries=3, retry_delay_seconds=2)
@@ -280,7 +280,7 @@ def run_correlation_analysis(df):
 
 #Task 6: 
 @task
-def summary_report(stats, tests, correlations):
+def summary_report(stats, tests, correlations, merged_df):
     logger = get_run_logger()
     logger.info("Creating summary report")
 
@@ -346,8 +346,8 @@ def summary_report(stats, tests, correlations):
     logger.info("----- FINAL SUMMARY -----")
 
     #Total countries & years
-    total_countries = stats["mean_region"].index.size
-    total_years = stats["mean_year"].index.size
+    total_countries = merged_df["Country"].nunique()
+    total_years = merged_df["Year"].nunique()
     logger.info(f"Total countries included: {total_countries}")
     logger.info(f"Total yeard included: {total_years}")
 
@@ -387,7 +387,7 @@ def happiness_pipeline():
     create_visualizations(merged_df)
     tests = run_statistical_tests(merged_df)
     correlations = run_correlation_analysis(merged_df)
-    summary_report(stats, tests, correlations)
+    summary_report(stats, tests, correlations, merged_df)
     
     logger.info("Pipeline completed successfully.")
     #return merged_df
