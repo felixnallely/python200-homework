@@ -351,12 +351,16 @@ def summary_report(stats, tests, correlations, merged_df):
     logger.info(f"Total countries included: {total_countries}")
     logger.info(f"Total yeard included: {total_years}")
 
-    #Top & Bottom regions 
+    #3 Top & 3 Bottom regions 
     region_means = stats["mean_region"].sort_values(ascending=False)
-    top_region = region_means.index[0]
-    bottom_region = region_means.index[-1]
-    logger.info(f"Top region by happiness: {top_region} ({region_means.iloc[0]:.3f})")
-    logger.info(f"Bottom region by happiness: {bottom_region} ({region_means.iloc[-1]:.3f})")
+    top3 = region_means.head(3)
+    bottom3 = region_means.tail(3)
+    logger.info(f"Top 3 region by happiness:") 
+    for region, value in top3.items():
+        logger.info(f"{region}: ({value:.3f})")
+    logger.info(f"Bottom 3 region by happiness:")
+    for region, value in bottom3.items():
+        logger.info(f"{region}: {value:.3f})")
 
     logger.info("Pandemic test result:")
     logger.info(tests["pandemic_test"]["interpretation"])
