@@ -23,17 +23,18 @@ def summarize_data(series: pd.Series) -> dict:
 
 #-- Perfect Flow --
 @flow
-def pipeline_flow(input_arr: np.ndarray):
-    s = create_series(input_arr)
+def pipeline_flow():
+    arr = np.array([
+        12.0, 15.0, np.nan, 14.0, 10.0, np.nan, 18.0, 14.0, 16.0, 22.0,
+        np.nan, 13.0
+    ])
+    s = create_series(arr)
     cleaned = clean_data(s)
     summary = summarize_data(cleaned)
     return summary
 
 if __name__ == "__main__":
-    arr = np.array([12.0, 15.0, np.nan, 14.0, 10.0,
-                    np.nan, 18.0, 14.0, 16.0, 22.0,
-                    np.nan, 13.0])
-    result = pipeline_flow(arr)
+    result = pipeline_flow()
     print("Pipeline Q2:")
     for k, v in result.items():
         print(f"{k}: {v}")

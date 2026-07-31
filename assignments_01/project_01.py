@@ -29,9 +29,8 @@ def load_and_merge_happiness_data():
         )
 
         #fix different column names 
-        df = df.rename(columns= {
-            "Ladder score": "Happiness score"
-        })
+        if "Ladder score" in df.columns:
+            df = df.rename(columns={"Ladder score": "Happiness score"})
 
         df["Year"] = year
         all_dfs.append(df)
@@ -344,6 +343,39 @@ def summary_report(stats, tests, correlations):
     
     logger.info(f"Summary report was saved to {report_path}")
 
+    logger.info("----- FINAL SUMMARY -----")
+
+    #Total countries & years
+    total_countries = stats["mean_region"].index.size
+    total_years = stats["mean_year"].index.size
+    logger.info(f"Total countries included: {total_countries}")
+    logger.info(f"Total yeard included: {total_years}")
+
+    #Top & Bottom regions 
+    region_means = stats["mean_region"].sort_values(ascending=False)
+    top_region = region_means.index[0]
+    bottom_region = region_means.index[-1]
+    logger.info(f"Top region by happiness: {top_region} ({region_means.iloc[0]:.3f})")
+    logger.info(f"Bottom region by happiness: {bottom_region} ({region_means.iloc[-1]:.3f})")
+
+    logger.info("Pandemic test result:")
+    logger.info(tests["pandemic_test"]["interpretation"])
+
+    #Bonferroni-surviving correlation
+    if correlations["significant_corrected"]:
+        surviving = [
+            (col, r, p)
+            for col, r, p in correlations["results"]
+            if col in correlations["significant_corrected"]
+        ]
+        strongest = max(surviving, key=lambda x: abs(x[1]))
+        logger.info(f"Strongest Bonferroni-surviving correlation: {strongest[0]} (r = {strongest[1]:.3f})")
+    else: 
+        logger.info("Strongest Bonferroni-surviving correlation: None")
+
+    logger.info("-----END OF SUMMARY -----")
+
+
 
 @flow 
 def happiness_pipeline():
@@ -356,25 +388,7 @@ def happiness_pipeline():
     tests = run_statistical_tests(merged_df)
     correlations = run_correlation_analysis(merged_df)
     summary_report(stats, tests, correlations)
-
-#-- Summary logging --
-    logger.info("FINAL SUMMARY (inside flow):")
-    logger.info(f"Mean happiness Score (overall): {stats['overall']['mean']:.3f}")
-    logger.info(f"Pandemic test Interpretation: {tests['pandemic_test']['interpretation']}")
-    logger.info(f"Regional Test Interpretation: {tests['regional_test']['interpretation']}")
-    logger.info(f"Significant correlations after Bonferroni: {correlations['significant_corrected']}")
-
-    if correlations["significant_corrected"]:
-        surviving = [
-            (col, r, p)
-            for col, r, p in correlations["results"]
-            if col in correlations["significant_corrected"]
-        ]
-        strongest = max(surviving, key=lambda x: abs(x[1]))
-        logger.info(f"Strongest curviving correlation: {strongest[0]} (r = {strongest[1]:.3f})")
-    else:
-        logger.info("Strongest surviving correlation: None")
-
+    
     logger.info("Pipeline completed successfully.")
     #return merged_df
     #return stats
