@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 #Task 1:
-data_dir = Path("assignments_01/resources/happiness_project")
+data_dir = Path("assignments/resources/happiness_project")
 output_dir = Path("assignments_01/outputs")
 output_file = output_dir / "merged_happiness.csv"
 
@@ -62,13 +62,13 @@ def compute_descriptive_stats(df):
     logger.info(f"Overall Standard Deviation Happiness score: {std_score:.3f}")
 
     #mean by year 
-    logger.info("Mean Happiness score by Year:")
+    logger.info("Mean Happiness Score by Year:")
     mean_year = df.groupby("Year")["Happiness score"].mean()
     for year, value in mean_year.items():
         logger.info(f"{year}: {value:.3f}")
     
     #mean by region 
-    logger.info("Mean Happiness score by Region:")
+    logger.info("Mean Happiness Score by Region:")
     mean_region = df.groupby("Regional indicator")["Happiness score"].mean()
     for region, value in mean_region.items():
         logger.info(f"{region}: {value:.3f}")
@@ -153,7 +153,7 @@ def run_statistical_tests(df):
         if mean_2020 < mean_2019:
             interpretation = (
                 "Global happiness scores were significantly lower in 2020 compared to 2019."
-                "This suggests the decline was real and not because of random chance."
+                "This suggests the decline was real not caused by random chance."
             )
         else: 
             interpretation = (
@@ -163,7 +163,7 @@ def run_statistical_tests(df):
     else:
         interpretation = (
             "No statistically significant difference between 2019 and 2020 happiness scores."
-            "Therefore in change in happiness score is likely due yearly variation."
+            "Therefore the change in the happiness score is likely due to yearly variation."
         )
     
     logger.info(f"Interpretation: {interpretation}")
@@ -349,7 +349,7 @@ def summary_report(stats, tests, correlations, merged_df):
     total_countries = merged_df["Country"].nunique()
     total_years = merged_df["Year"].nunique()
     logger.info(f"Total countries included: {total_countries}")
-    logger.info(f"Total yeard included: {total_years}")
+    logger.info(f"Total years included: {total_years}")
 
     #3 Top & 3 Bottom regions 
     region_means = stats["mean_region"].sort_values(ascending=False)
@@ -358,7 +358,7 @@ def summary_report(stats, tests, correlations, merged_df):
     logger.info(f"Top 3 region by happiness:") 
     for region, value in top3.items():
         logger.info(f"{region}: ({value:.3f}")
-    logger.info(f"Bottom 3 region by happiness:")
+    logger.info(f"Bottom 3 regions by happiness:")
     for region, value in bottom3.items():
         logger.info(f"{region}: {value:.3f}")
 
