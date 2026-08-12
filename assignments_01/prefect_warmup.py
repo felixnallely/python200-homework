@@ -4,6 +4,8 @@ import pandas as pd
 import numpy as np 
 from prefect import flow, task 
 
+arr = np.array([12.0, 15.0, np.nan, 14.0, 10.0, np.nan, 18.0, 14.0, 16.0, 22.0, np.nan, 13.0])
+
 @task #Task 1: create series
 def create_series(input_arr: np.ndarray) -> pd.Series:
     return pd.Series(input_arr, name="values")
@@ -34,10 +36,7 @@ def pipeline_flow():
     return summary
 
 if __name__ == "__main__":
-    result = pipeline_flow()
-    print("Pipeline Q2:")
-    for k, v in result.items():
-        print(f"{k}: {v}")
+    pipeline_flow()
 
 #---- comment answer ----
 #- Why might Prefect be more overhead than it is worth here?
