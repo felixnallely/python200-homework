@@ -37,6 +37,10 @@ print("Reshaped shape:", x_2d.shape)
 from sklearn.cluster import KMeans
 from sklearn.datasets import make_blobs
 import matplotlib.pyplot as plt
+from pathlib import Path
+
+output_dir = Path("assignments_03/outputs")
+output_dir.mkdir(parents=True, exist_ok=True)
 
 X_clusters, _ = make_blobs(n_samples=120, centers=3, cluster_std=0.8, random_state=7)
 

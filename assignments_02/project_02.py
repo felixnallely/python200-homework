@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 #Task 1: Load and Explore 
-df = pd.read_csv("assignments_02/outputs/resources/student_performance_math.csv", sep=";")
+df = pd.read_csv("assignments_02/student_performance_math.csv", sep=";")
 
 print("Task 1:")
 print("Shape:", df.shape)
@@ -28,7 +28,7 @@ plt.show()
 
 
 #Task 2: Preprocess the Data 
-df = pd.read_csv("assignments_02/outputs/resources/student_performance_math.csv", sep=";")
+df = pd.read_csv("assignments_02/student_performance_math.csv", sep=";")
 print("Task 2:")
 print("Original Shape:", df.shape)
 
@@ -78,9 +78,10 @@ plt.ylabel("Final Grade (G3)")
 plt.savefig("assignments_02/outputs/absences_vs_g3.png")
 plt.show()
 
+#--- Visulalization Scatter plot 1 comments: 
 # After filtering the data the relationship between absences and final grades become clear. 
-# It shows that students with more absences tend to have lower G3 scores. In the original  data
-# the correlation was thrown off because of being a no show for the final, leading absence to cause
+# It shows that students with more absences tend to have lower G3 scores, althogh the relationship is negative. In the original data
+# the correlation was thrown off because being absent for the final, caused
 # a misinterpretation when looking at absences and corrleation.  
 
 #Scatter plot: Second period grade vs Final grade (G2 vs G3)
@@ -92,9 +93,10 @@ plt.ylabel("Final Grade (G3)")
 plt.savefig("assignments_02/outputs/g2_vs_g3.png")
 plt.show()
 
+#--- Visualization Scatter plot 2 comments:
 # The Second Period Grade is a great predictor of G3. This is because when students perform
-# well in the second grading period will almost always perform well on the final. G2 and G3 have a
-# strong relationship because good performance early on often leads to great final exam outcomes. 
+# well in the second grading period they will almost always perform well on the final. G2 and G3 have a
+# strong positive relationship because good performance early on often leads to great final exam outcomes. 
 
 #Task 4: Baseline Model 
 from sklearn.model_selection import train_test_split
@@ -161,14 +163,15 @@ for name, coef in zip(feature_cols, model.coef_):
 
 # Compare R² baseline:
 # - Adding more features helps improve the predictablilty of the model. 
+# - The largest positive coefficient is internet (+1.037) the largest negative coefficient is schoolsup (-2.263).
 # Suprising signs: 
 # - The strong positive coefficients are: studytime, medu, fedu, internet, freetime, sex. And negative coefficients are failures, goout, walc, absences.
 #   This was suprising because it shows that freetime and how students spend that free time affects their final grades. 
 # Compare train R² and test R²- are they close, is there a gap? What does that tell you about the model?
 # - Both train R² and test R² are close with train R² at 0.235 and test R² at 0.263. This tells me that the model is performing well. 
 # If you were deploying this model in production, which features would you keep and which would you drop?
-# - The features I would keep are those that will improve the prediction of the model and remove anything that is too complicated and doesn't imporve the models 
-#   predictability. I would keep features such as studytime, failures, goout and absences. I would get rid of weak features that overcomplicates the model such as;
+# - I would keep the features with larger coefficients and meaningful predictive values, and I would drop weak or unnecessary features.
+#   I would keep features such as studytime, failures, goout and absences. I would get rid of weak features that overcomplicates the model such as;
 #   activities, and traveltime. 
 
 #Task 6: Evaluate and Summarize 
@@ -181,7 +184,7 @@ plt.plot([min_val, max_val], [min_val, max_val], color="red", linestyle="--")
 plt.title("Predicted vs Actual (Full Model)")
 plt.xlabel("Predicted G3")
 plt.ylabel("Actual G3")
-plt.savefig("assignments_02/outputs/predicted_vs_actual.png")
+plt.savefig("assignments_02/outputs/predicted_vs_actual_g3.png")
 plt.show()
 
 # Does the model seem to struggle more at the high end, the low end, or is error roughly 
