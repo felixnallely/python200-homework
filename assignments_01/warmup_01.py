@@ -14,6 +14,10 @@ df = pd.DataFrame(data)
 #--- Pandas Question 1 ---
 print("First 3 Rows:")
 print(df.head(3))
+print("Shape:")
+print(df.shape)
+print("Data types:")
+print(df.dtypes)
 
 #--- Pandas Question 2 ---
 passed_score = df[(df["passed"] == True) & (df["grade"] > 80)]

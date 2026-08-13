@@ -357,7 +357,7 @@ def summary_report(stats, tests, correlations, merged_df):
     bottom3 = region_means.tail(3)
     logger.info(f"Top 3 region by happiness:") 
     for region, value in top3.items():
-        logger.info(f"{region}: ({value:.3f}")
+        logger.info(f"{region}: ({value:.3f})")
     logger.info(f"Bottom 3 regions by happiness:")
     for region, value in bottom3.items():
         logger.info(f"{region}: {value:.3f}")
@@ -373,9 +373,11 @@ def summary_report(stats, tests, correlations, merged_df):
             if col in correlations["significant_corrected"]
         ]
         strongest = max(surviving, key=lambda x: abs(x[1]))
-        logger.info(f"Strongest Bonferroni-surviving correlation: {strongest[0]} (r = {strongest[1]:.3f})")
+        variable, r, p = strongest 
+
+        logger.info(f"Strongest Bonferroni-surviving explanatory variable: {variable} (r = {r:.3f})")
     else: 
-        logger.info("Strongest Bonferroni-surviving correlation: None")
+        logger.info("Strongest Bonferroni-surviving explanatory variable: None")
 
     logger.info("-----END OF SUMMARY -----")
 
