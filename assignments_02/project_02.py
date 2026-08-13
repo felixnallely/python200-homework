@@ -6,6 +6,9 @@ from prefect import task, flow, get_run_logger
 import matplotlib.pyplot as plt 
 import seaborn as sns
 
+#--- Dataset loading comment: what parameter would you need to specify beyond the filename? 
+# I would need to specify the separator which is ';' and is needed for pd.read_csv().
+
 #Task 1: Load and Explore 
 df = pd.read_csv("assignments_02/student_performance_math.csv", sep=";")
 
@@ -184,7 +187,7 @@ plt.plot([min_val, max_val], [min_val, max_val], color="red", linestyle="--")
 plt.title("Predicted vs Actual (Full Model)")
 plt.xlabel("Predicted G3")
 plt.ylabel("Actual G3")
-plt.savefig("assignments_02/outputs/predicted_vs_actual_g3.png")
+plt.savefig("assignments_02/outputs/predicted_vs_actual.png")
 plt.show()
 
 # Does the model seem to struggle more at the high end, the low end, or is error roughly 
