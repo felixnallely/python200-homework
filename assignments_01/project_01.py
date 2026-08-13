@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 #Task 1:
-data_dir = Path("assignments_01/resources/happiness_project")
+data_dir = Path("assignments/resources/happiness_project")
 output_dir = Path("assignments_01/outputs")
 output_file = output_dir / "merged_happiness.csv"
 
@@ -29,9 +29,8 @@ def load_and_merge_happiness_data():
         )
 
         #fix different column names 
-        df = df.rename(columns= {
-            "Ladder score": "Happiness score"
-        })
+        if "Ladder score" in df.columns:
+            df = df.rename(columns={"Ladder score": "Happiness score"})
 
         df["Year"] = year
         all_dfs.append(df)
@@ -63,13 +62,13 @@ def compute_descriptive_stats(df):
     logger.info(f"Overall Standard Deviation Happiness score: {std_score:.3f}")
 
     #mean by year 
-    logger.info("Mean Happiness score by Year:")
+    logger.info("Mean Happiness Score by Year:")
     mean_year = df.groupby("Year")["Happiness score"].mean()
     for year, value in mean_year.items():
         logger.info(f"{year}: {value:.3f}")
     
     #mean by region 
-    logger.info("Mean Happiness score by Region:")
+    logger.info("Mean Happiness Score by Region:")
     mean_region = df.groupby("Regional indicator")["Happiness score"].mean()
     for region, value in mean_region.items():
         logger.info(f"{region}: {value:.3f}")
@@ -154,7 +153,7 @@ def run_statistical_tests(df):
         if mean_2020 < mean_2019:
             interpretation = (
                 "Global happiness scores were significantly lower in 2020 compared to 2019."
-                "This suggests the decline was real and not because of random chance."
+                "This suggests the decline was real not caused by random chance."
             )
         else: 
             interpretation = (
@@ -164,7 +163,7 @@ def run_statistical_tests(df):
     else:
         interpretation = (
             "No statistically significant difference between 2019 and 2020 happiness scores."
-            "Therefore in change in happiness score is likely due yearly variation."
+            "Therefore the change in the happiness score is likely due to yearly variation."
         )
     
     logger.info(f"Interpretation: {interpretation}")
@@ -281,7 +280,7 @@ def run_correlation_analysis(df):
 
 #Task 6: 
 @task
-def summary_report(stats, tests, correlations):
+def summary_report(stats, tests, correlations, merged_df):
     logger = get_run_logger()
     logger.info("Creating summary report")
 
@@ -323,7 +322,7 @@ def summary_report(stats, tests, correlations):
         f.write("\nSignificant after Bonferroni correction: \n")
         f.write(", ".join(correlations['significant_corrected']) + "\n")
 
-        
+    
         #Strongest surviving correlation 
         f.write("\nStrongest surviving correlation:\n")
 
@@ -344,6 +343,45 @@ def summary_report(stats, tests, correlations):
     
     logger.info(f"Summary report was saved to {report_path}")
 
+    logger.info("----- FINAL SUMMARY -----")
+
+    #Total countries & years
+    total_countries = merged_df["Country"].nunique()
+    total_years = merged_df["Year"].nunique()
+    logger.info(f"Total countries included: {total_countries}")
+    logger.info(f"Total years included: {total_years}")
+
+    #3 Top & 3 Bottom regions 
+    region_means = stats["mean_region"].sort_values(ascending=False)
+    top3 = region_means.head(3)
+    bottom3 = region_means.tail(3)
+    logger.info(f"Top 3 region by happiness:") 
+    for region, value in top3.items():
+        logger.info(f"{region}: ({value:.3f})")
+    logger.info(f"Bottom 3 regions by happiness:")
+    for region, value in bottom3.items():
+        logger.info(f"{region}: {value:.3f}")
+
+    logger.info("Pandemic test result:")
+    logger.info(tests["pandemic_test"]["interpretation"])
+
+    #Bonferroni-surviving correlation
+    if correlations["significant_corrected"]:
+        surviving = [
+            (col, r, p)
+            for col, r, p in correlations["results"]
+            if col in correlations["significant_corrected"]
+        ]
+        strongest = max(surviving, key=lambda x: abs(x[1]))
+        variable, r, p = strongest 
+
+        logger.info(f"Strongest Bonferroni-surviving explanatory variable: {variable} (r = {r:.3f})")
+    else: 
+        logger.info("Strongest Bonferroni-surviving explanatory variable: None")
+
+    logger.info("-----END OF SUMMARY -----")
+
+
 
 @flow 
 def happiness_pipeline():
@@ -355,8 +393,8 @@ def happiness_pipeline():
     create_visualizations(merged_df)
     tests = run_statistical_tests(merged_df)
     correlations = run_correlation_analysis(merged_df)
-    summary_report(stats, tests, correlations)
-
+    summary_report(stats, tests, correlations, merged_df)
+    
     logger.info("Pipeline completed successfully.")
     #return merged_df
     #return stats

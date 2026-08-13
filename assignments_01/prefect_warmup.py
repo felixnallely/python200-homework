@@ -4,6 +4,8 @@ import pandas as pd
 import numpy as np 
 from prefect import flow, task 
 
+arr = np.array([12.0, 15.0, np.nan, 14.0, 10.0, np.nan, 18.0, 14.0, 16.0, 22.0, np.nan, 13.0])
+
 @task #Task 1: create series
 def create_series(input_arr: np.ndarray) -> pd.Series:
     return pd.Series(input_arr, name="values")
@@ -23,28 +25,27 @@ def summarize_data(series: pd.Series) -> dict:
 
 #-- Perfect Flow --
 @flow
-def pipeline_flow(input_arr: np.ndarray):
-    s = create_series(input_arr)
+def pipeline_flow():
+    arr = np.array([
+        12.0, 15.0, np.nan, 14.0, 10.0, np.nan, 18.0, 14.0, 16.0, 22.0,
+        np.nan, 13.0
+    ])
+    s = create_series(arr)
     cleaned = clean_data(s)
     summary = summarize_data(cleaned)
     return summary
 
 if __name__ == "__main__":
-    arr = np.array([12.0, 15.0, np.nan, 14.0, 10.0,
-                    np.nan, 18.0, 14.0, 16.0, 22.0,
-                    np.nan, 13.0])
-    result = pipeline_flow(arr)
-    print("Pipeline Q2:")
-    for k, v in result.items():
-        print(f"{k}: {v}")
+    pipeline_flow()
 
-#---- comment answer ----
+#---- Reflection 1: 
 #- Why might Prefect be more overhead than it is worth here?
 #  This pipeline is very small it only performs a few simple operations on a small array.
 #  Therefore using Prefect adds additional components such as a flow engine, and runtime overhead. 
 #  Since this is a small workflow using Prefect will add additional work when initializing and in execution time unlike using plain Python calls.
 #  Using plain Python would run faster and make it easier to read. Overall using Prefect for such a small pipeline outweighs the benefits. 
 
+#---- Reflection 2: 
 #- Logical scenarios where framework like Prefect could be useful:
 #  -Team Collaborations - When having team collaborations since it gives other developers access to logs, any failures and run history.
 #  -Scheduling - When scheduling since workflow is small and can be run every hour, day and week. 
