@@ -66,7 +66,7 @@ plt.ylabel("Feature 2")
 plt.legend()
 
 #Save figure
-plt.savefig('outputs/kmeans_clusters.png')
+plt.savefig(output_dir / "kmeans_clusters.png")
 plt.show()
 
 # %%
@@ -92,7 +92,7 @@ plt.title("Medical Cost vs Age")
 plt.xlabel("Age")
 plt.ylabel("Medical Cost")
 
-plt.savefig("outputs/cost_vs_age.png", dpi=300)
+plt.savefig(output_dir / "cost_vs_age.png", dpi=300)
 plt.close()
 
 #--- What you see:
@@ -161,13 +161,13 @@ min_value = min(min(y_test_full), min(y_predicted))
 plt.plot([min_value, max_value], [min_value, max_value], color="red", linestyle="--", label="Perfect Prediction")
 
 plt.title("Predicted vs Actual")
-plt.xlabel("Actual Cost")
-plt.ylabel("Predicted Cost")
+plt.xlabel("Predicted Cost")
+plt.ylabel("Actual Cost")
 plt.legend()
 plt.grid(True, linestyle=":", alpha=0.6)
 
 #Save 
-plt.savefig("outputs/predicted_vs_actual_cost.png", bbox_inches="tight")
+plt.savefig(output_dir / "predicted_vs_actual_cost.png", bbox_inches="tight")
 plt.close()
 
 #-- Add a comment: what does it mean when a point falls above the diagonal? What about below?
