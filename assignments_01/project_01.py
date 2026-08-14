@@ -323,7 +323,7 @@ def summary_report(stats, tests, correlations):
         f.write("\nSignificant after Bonferroni correction: \n")
         f.write(", ".join(correlations['significant_corrected']) + "\n")
 
-        
+    
         #Strongest surviving correlation 
         f.write("\nStrongest surviving correlation:\n")
 
@@ -356,6 +356,24 @@ def happiness_pipeline():
     tests = run_statistical_tests(merged_df)
     correlations = run_correlation_analysis(merged_df)
     summary_report(stats, tests, correlations)
+
+#-- Summary logging --
+    logger.info("FINAL SUMMARY (inside flow):")
+    logger.info(f"Mean happiness Score (overall): {stats['overall']['mean']:.3f}")
+    logger.info(f"Pandemic test Interpretation: {tests['pandemic_test']['interpretation']}")
+    logger.info(f"Regional Test Interpretation: {tests['regional_test']['interpretation']}")
+    logger.info(f"Significant correlations after Bonferroni: {correlations['significant_corrected']}")
+
+    if correlations["significant_corrected"]:
+        surviving = [
+            (col, r, p)
+            for col, r, p in correlations["results"]
+            if col in correlations["significant_corrected"]
+        ]
+        strongest = max(surviving, key=lambda x: abs(x[1]))
+        logger.info(f"Strongest curviving correlation: {strongest[0]} (r = {strongest[1]:.3f})")
+    else:
+        logger.info("Strongest surviving correlation: None")
 
     logger.info("Pipeline completed successfully.")
     #return merged_df
