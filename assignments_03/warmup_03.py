@@ -55,7 +55,7 @@ knn_scaled.fit(X_train_scaled, y_train)
 preds_scaled = knn_scaled.predict(X_test_scaled)
 
 print("---KNN Q2: ---")
-print("Accuracy (scaled):", accuracy_score(y_test, preds))
+print("Accuracy (scaled):", accuracy_score(y_test, preds_scaled))
 
 #Comment: Does scaling improve performance, hurt it, or make no difference? Why might that be for this particular dataset?
 # Scaling KNN doesn't make a huge difference, since the Iris features are already vey simliar in scale. So the performance changes very little. 
@@ -80,6 +80,9 @@ for k in k_values:
     scores = cross_val_score(knn, X_train, y_train, cv=5)
 
 print("---KNN Q4: ---")
+for k in k_values: 
+    knn = KNeighborsClassifier(n_neighbors=k)
+    scores = cross_val_score(knn, X_train, y_train, cv=5)
 print(f"k={k}, mean CV accuracy={scores.mean():.4f}")
 
 #Comment: Identifying which k you would choose and why.
@@ -135,9 +138,8 @@ for C in C_values:
 
     log_reg.fit(X_train_scaled, y_train)
     
-    coef_sum = np.abs(log_reg.estimators_[0].coef_).sum() \
-            + np.abs(log_reg.estimators_[1].coef_).sum() \
-            + np.abs(log_reg.estimators_[2].coef_).sum() 
+    coef_sum = sum(np.abs(est.coef_).sum() for est in log_reg.estimators_) 
+    #coef_sum = np.abs(log_reg.coef_).sum()
     
     print("---Logistic Regression Q1: ---")
     print(f"C={C}, total |coefficients| sum = {coef_sum:.4f}")
@@ -233,6 +235,7 @@ sample_indices = [0, 1, 2, 3, 4]
 n_values = [2, 5, 15, 40]
 
 #Grid of subplots
+plt.figure(figsize=(12, 10))
 #Original images - Row 0:
 for col, idx in enumerate(sample_indices):
     plt.subplot(len(n_values) + 1, len(sample_indices), col + 1)
@@ -244,8 +247,8 @@ for col, idx in enumerate(sample_indices):
 for row, n in enumerate(n_values):
     for col, idx in enumerate(sample_indices):
         recon = reconstruct_digit(idx, scores, pca, n)
-        plt.subplot(len(n_values) + 1, len(sample_indices),
-                    row * len(sample_indices) + col + 1 + len(sample_indices))
+        subplot_index = (row +1) * len(sample_indices) + col + 1 
+        plt.subplot(len(n_values) + 1, len(sample_indices), subplot_index)
         plt.imshow(recon, cmap='gray_r')
         plt.title(f"n={n}")
         plt.axis('off')

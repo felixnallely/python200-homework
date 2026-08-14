@@ -282,6 +282,13 @@ print("Accuracy:", accuracy_score(y_test, y_pred_log_pca))
 print(classification_report(y_test, y_pred_log_pca))
 results["LogReg_PCA"] = accuracy_score(y_test, y_pred_log_pca)
 
+#--- Task 3 comparison comments:
+# KNN comparison (scaled vs PCA): The KNN scaled data performs better than PCA. This is because KNN relies on distances while PCA 
+# removes original features. Scaling helps keep all features, therefore KNN works best on a scaled dataset.
+
+# Logistic Regression comparison (scaled vs PCA): Scaled Logistic Regression data performs better than Logistic Regression on PCA.
+# Scaling is enough and PCA doesn't imporve any performance for Logistic Regression on this dataset since Iris only has 4 features to work with.  
+
 print("\nSummary of test accuracies:")
 for name, acc in results.items():
     print(f"{name}: {acc:.4f}")
